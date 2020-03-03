@@ -1,24 +1,5 @@
 import {IInputs, IOutputs} from "./generated/ManifestTypes";
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { App, IContactCard } from "./App";
-import {
-    DocumentCard,
-    DocumentCardActivity,
-    DocumentCardTitle,
-    DocumentCardLogo,
-    DocumentCardStatus,
-    IDocumentCardLogoProps,
-    IDocumentCardActivityPerson,
-    IDocumentCardStyles,
-
-    IDocumentCardDetailsProps,
-    IDocumentCardProps,
-    IDocumentCardTitleProps
-} from 'office-ui-fabric-react/lib/DocumentCard';
-import { mergeStyles } from 'office-ui-fabric-react/lib/Styling';
-import { TestImages } from '@uifabric/example-data';
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
 export class GridCard implements ComponentFramework.StandardControl<IInputs, IOutputs> {
@@ -83,6 +64,7 @@ export class GridCard implements ComponentFramework.StandardControl<IInputs, IOu
 		if (context.parameters.GridCardDataSet.loading) return;
 		const dataSet = context.parameters.GridCardDataSet;
 		var entityType = dataSet.getTargetEntityType();
+		let nameField: string = context.parameters.primaryFieldName.raw ? context.parameters.primaryFieldName.raw : "";
 
 		//add segment to render empty divs if no records
 
@@ -103,17 +85,12 @@ export class GridCard implements ComponentFramework.StandardControl<IInputs, IOu
 			titleTag.className = "infoTitle";
 
 			var titleLabel = document.createElement("h3");
-			titleLabel.innerHTML = record.getFormattedValue("name")
+			titleLabel.innerHTML = record.getFormattedValue(nameField)
 			titleLabel.addEventListener('click', function () {
-				let entityFormOptions = {
-					entityName: entityType,
-					entityId: recordId,
-				}
-				//context.navigation.openForm(entityFormOptions);
 				var recordRef: ComponentFramework.EntityReference = {
 					etn: entityType,
 					id: { guid: recordId },
-					name: record.getFormattedValue("name")
+					name: record.getFormattedValue(nameField)
 				};
 				context.parameters.GridCardDataSet.openDatasetItem(recordRef);
 			});
@@ -135,18 +112,6 @@ export class GridCard implements ComponentFramework.StandardControl<IInputs, IOu
 
 			this._cardContainer.innerHTML = content;
 		}
-
-
-		//React model for rendering fields on a datacard
-		// const cardData: IContactCard[] = dataSet.sortedRecordIds.map(r => ({
-		// 	key: r,
-		// 	values: dataSetColumns.map(c => ({
-		// 	  attribute: c.name,
-		// 	  value: dataSet.records[r].getFormattedValue(c.name)
-		// 	}))
-		//   }));
-
-        // ReactDOM.render(React.createElement(App, cardData), this._container);
 	}
 	/** 
 	 * It is called by the framework prior to a control receiving new data. 

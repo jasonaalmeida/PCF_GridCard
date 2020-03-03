@@ -1,0 +1,30 @@
+h3 {
+    padding-left: 20px;
+    font-weight: normal;
+}
+#gridCard {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #gridCard td, #gridCard th {
+        border-bottom: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #gridCard tr:hover {
+        background-color: #ddd;
+    }
+
+    #gridCard th {
+        padding-left: 20px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+    }
+
+    #gridCard td {
+        text-align: left;
+        font-weight: bold;
+        padding-top:13px;
+    }
